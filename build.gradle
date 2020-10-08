@@ -22,6 +22,8 @@ dependencies {
 
     compile 'io.springfox:springfox-swagger2:2.7.0'
     compile 'io.springfox:springfox-swagger-ui:2.7.0'
+    compile group: 'org.springframework.plugin', name: 'spring-plugin-core', version: '2.0.0.RELEASE'
+    compile 'io.swagger:swagger-annotations:1.6.2'
 
     implementation 'org.springframework.boot:spring-boot-starter-web:2.3.2.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb:2.3.2.RELEASE'

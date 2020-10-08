@@ -3,6 +3,11 @@ package com.todo.controller;
 import com.todo.model.Todo;
 import com.todo.model.dto.todo.TodoDto;
 import com.todo.service.TodoService;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -30,24 +35,48 @@ public class TodoController {
 
     private final TodoService todoService;
 
+    @ApiOperation(value = "Returns all todos", response = Todo.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 400, message = "Client error"),
+            @ApiResponse(code = 500, message = "Server error")
+    })
     @GetMapping("/todos")
     public List<Todo> getAllTodos() {
         Page<Todo> todoPage = todoService.getAllTodos();
         return todoPage.getContent();
     }
 
+    @ApiModelProperty(value = "Creates todo")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 400, message = "Client error"),
+            @ApiResponse(code = 500, message = "Server error")
+    })
     @PostMapping("/todos")
     public Todo createTodo(@Valid @RequestBody TodoDto todo) {
         return todoService.create(todo);
     }
 
+    @ApiModelProperty(value = "Updates todo")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 400, message = "Client error"),
+            @ApiResponse(code = 500, message = "Server error")
+    })
     @PutMapping("/todos/{id}")
-    public Todo updateTodo(@PathVariable("id") String id, @Valid @RequestBody TodoDto todo) {
+    public Todo updateTodo(@ApiParam(value = "Todo id to update", required = true) @PathVariable("id") String id, @Valid @RequestBody TodoDto todo) {
         return todoService.update(id, todo);
     }
 
+    @ApiModelProperty(value = "Deletes todo")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 400, message = "Client error"),
+            @ApiResponse(code = 500, message = "Server error")
+    })
     @DeleteMapping("/todos/{id}")
-    public void deleteTodo(@PathVariable("id") String id) {
+    public void deleteTodo(@ApiParam(value = "Todo id to delete", required = true) @PathVariable("id") String id) {
         todoService.delete(id);
     }
 }

@@ -1,0 +1,16 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/todo-app
+      database: todo-app
+
+logging:
+  level:
+    api.controllers: INFO
+
+swagger:
+  api.info:
+    title: Todo API
+    description: Swagger documentation for todo service
+    version: v1
+    appname: Todo Application
