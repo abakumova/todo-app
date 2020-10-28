@@ -53,12 +53,13 @@ public class TodoController {
             @ApiResponse(code = 400, message = "Client error"),
             @ApiResponse(code = 500, message = "Server error")
     })
-    @PostMapping("/todos")
-    public Todo createTodo(@Valid @RequestBody TodoDto todo) {
-        return todoService.create(todo);
+    @ApiOperation(value = "Creates todo", response = Todo.class)
+    @PostMapping(consumes = "application/json", produces = "application/json")
+    public Todo createTodo(@Valid @RequestBody TodoDto todoDto) {
+        return todoService.create(todoDto);
     }
 
-    @ApiModelProperty(value = "Updates todo")
+    @ApiOperation(value = "Updates todo")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 400, message = "Client error"),
@@ -69,7 +70,7 @@ public class TodoController {
         return todoService.update(id, todo);
     }
 
-    @ApiModelProperty(value = "Deletes todo")
+    @ApiOperation(value = "Deletes todo")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 400, message = "Client error"),

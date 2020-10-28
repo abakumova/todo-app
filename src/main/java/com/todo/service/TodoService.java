@@ -21,16 +21,22 @@ public class TodoService {
     private final TodoRepository todoRepository;
 
     public Page<Todo> getAllTodos() {
-        return todoRepository.findAll(PageRequest.of(0, 1, Sort.by(Sort.Direction.DESC, "createdAt")));
+        log.info("Get all todos");
+        return todoRepository.findAll(PageRequest.of(0, 100, Sort.by(Sort.Direction.DESC, "createdAt")));
     }
 
     public Todo create(TodoDto todoDto) {
+        log.info("Todo create: id={}, text={}", todoDto.getId(), todoDto.getTitle());
         Todo todo = new Todo(todoDto);
+        todo.setIsCompleted(todoDto.getIsCompleted());
+        todo.setCreatedAt(todoDto.getCreatedAt());
+        todoRepository.save(todo);
 
-        return todoRepository.save(todo);
+        return todo;
     }
 
     public Todo update(String id, TodoDto todoDto) {
+        log.info("Todo update: id={}", todoDto.getId());
         return update(getTodoById(id), todoDto);
     }
 
@@ -41,6 +47,7 @@ public class TodoService {
     }
 
     public void delete(String id) {
+        log.info("Todo delete: id={}", id);
         todoRepository.deleteById(id);
     }
 
