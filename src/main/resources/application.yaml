@@ -14,3 +14,7 @@ swagger:
     description: Swagger documentation for todo service
     version: v1
     appname: Todo Application
+
+server:
+  error:
+    include-message: always
