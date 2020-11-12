@@ -6,11 +6,10 @@ import com.todo.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Slf4j
@@ -20,9 +19,9 @@ public class TodoService {
 
     private final TodoRepository todoRepository;
 
-    public Page<Todo> getAllTodos() {
+    public List<Todo> getAllTodos() {
         log.info("Get all todos");
-        return todoRepository.findAll(PageRequest.of(0, 100, Sort.by(Sort.Direction.DESC, "createdAt")));
+        return todoRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
     }
 
     public Todo create(TodoDto todoDto) {
@@ -36,12 +35,12 @@ public class TodoService {
     }
 
     public Todo update(String id, TodoDto todoDto) {
-        log.info("Todo update: id={}", todoDto.getId());
+        log.info("Todo update: id={}", id);
         return update(getTodoById(id), todoDto);
     }
 
     public Todo update(Todo existed, TodoDto updated) {
-        BeanUtils.copyProperties(updated, existed);
+        BeanUtils.copyProperties(updated, existed, "createdAt", "id");
 
         return todoRepository.save(existed);
     }

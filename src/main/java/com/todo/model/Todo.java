@@ -39,10 +39,10 @@ public class Todo {
     private Boolean isCompleted;
 
     public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt == null ? null : new Date(createdAt.getTime());
+        this.createdAt = createdAt == null ? new Date() : createdAt;
     }
 
     public void setIsCompleted(Boolean isCompleted) {
-        this.isCompleted = isCompleted == null ? null : false;
+        this.isCompleted = isCompleted != null && isCompleted;
     }
 }
