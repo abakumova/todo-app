@@ -10,7 +10,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -43,8 +42,18 @@ public class TodoController {
     })
     @GetMapping("/todos")
     public List<Todo> getAllTodos() {
-        Page<Todo> todoPage = todoService.getAllTodos();
-        return todoPage.getContent();
+        return todoService.getAllTodos();
+    }
+
+    @ApiOperation(value = "Returns todo by ID", response = Todo.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 400, message = "Client error"),
+            @ApiResponse(code = 500, message = "Server error")
+    })
+    @GetMapping("/todos/{id}")
+    public Todo getTodoById(@ApiParam(value = "Todo id to receive", required = true) @PathVariable("id") String id) {
+        return todoService.getTodoById(id);
     }
 
     @ApiModelProperty(value = "Creates todo")
