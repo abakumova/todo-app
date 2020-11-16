@@ -1,0 +1,55 @@
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.4/lodash.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular.min.js"></script>
+<div class="todo-content">
+  <h1 class="page-title">Todos</h1>
+  <div class="todo-create">
+    <form #todoForm="ngForm" (ngSubmit)="createTodo(todoForm)" novalidate>
+      <input type="text" id="title" class="form-control" placeholder="Type a todo and press enter..."
+             required
+             name="title" [(ngModel)]="newTodo.title"
+             #title="ngModel">
+      <div *ngIf="title.errors && title.dirty"
+           class="alert alert-danger">
+        <div [hidden]="!title.errors.required">
+          Title is required.
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <ul class="todo-list">
+    <li *ngFor="let todo of todos" [class.completed]="todo.isCompleted === true">
+      <div class="todo-row" *ngIf="!editing || editingTodo.id != todo.id">
+        <a class="todo-completed" (click)="toggleIsCompleted(todo)">
+          <em class="material-icons toggle-completed-checkbox"></em>
+        </a>
+        <span class="todo-title">
+              {{todo.title}}
+            </span>
+        <span class="todo-actions">
+                <a (click)="editTodo(todo)">
+                  <em class="material-icons edit">edit</em>
+                </a>
+                <a (click)="deleteTodo(todo.id)">
+                  <em class="material-icons delete">clear</em>
+                </a>
+            </span>
+      </div>
+      <div class="todo-edit" *ngIf="editing && editingTodo.id === todo.id">
+        <input class="form-control" type="text"
+               [(ngModel)]="editingTodo.title" required>
+        <span class="edit-actions">
+                <a (click)="updateTodo(editingTodo)">
+                  <em class="material-icons">done</em>
+                </a>
+                <a (click)="clearEditing()">
+                  <em class="material-icons">clear</em>
+                </a>
+            </span>
+      </div>
+    </li>
+  </ul>
+  <div class="no-todos" *ngIf="todos && todos.length == 0">
+    <p>No Todos Found!</p>
+  </div>
+</div>

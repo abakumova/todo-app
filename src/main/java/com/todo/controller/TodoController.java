@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.List;
 
-@CrossOrigin("*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @Validated
 @RequestMapping(path = "/ta/apis/v1")
@@ -67,7 +67,7 @@ public class TodoController {
             @ApiResponse(code = 500, message = "Server error")
     })
     @ApiOperation(value = "Creates todo", response = Todo.class)
-    @PostMapping(consumes = "application/json", produces = "application/json")
+    @PostMapping("/todos")
     public Todo createTodo(@Valid @RequestBody TodoDto todoDto) {
         return todoService.create(todoDto);
     }
