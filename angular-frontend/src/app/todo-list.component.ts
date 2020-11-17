@@ -2,16 +2,21 @@ import {Component, Input, OnInit} from '@angular/core';
 import {TodoService} from './todo.service';
 import {Todo} from './todo';
 import {NgForm} from '@angular/forms';
+import {printLine} from "tslint/lib/test/lines";
+import {element} from "protractor";
+
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'todo-list',
   templateUrl: './todo-list.component.html'
 })
 
 export class TodoListComponent implements OnInit {
-  todos: Todo[];
+
+  todos: Todo[] = [];
   newTodo: Todo = new Todo();
-  editing: boolean = false;
+  editing = false;
   editingTodo: Todo = new Todo();
 
   constructor(
@@ -40,6 +45,7 @@ export class TodoListComponent implements OnInit {
   deleteTodo(id: string): void {
     this.todoService.deleteTodo(id)
       .then(() => {
+        // tslint:disable-next-line:triple-equals
         this.todos = this.todos.filter(todo => todo.id != id);
       });
   }
@@ -48,17 +54,17 @@ export class TodoListComponent implements OnInit {
     console.log(todoData);
     this.todoService.updateTodo(todoData)
       .then(updatedTodo => {
-        let existingTodo = this.todos.find(todo => todo.id === updatedTodo.id);
+        const existingTodo = this.todos.find(todo => todo.id === updatedTodo.id);
         Object.assign(existingTodo, updatedTodo);
         this.clearEditing();
       });
   }
 
-  toggleCompleted(todoData: Todo): void {
+  toggleIsCompleted(todoData: Todo): void {
     todoData.isCompleted = !todoData.isCompleted;
     this.todoService.updateTodo(todoData)
       .then(updatedTodo => {
-        let existingTodo = this.todos.find(todo => todo.id === updatedTodo.id);
+        const existingTodo = this.todos.find(todo => todo.id === updatedTodo.id);
         Object.assign(existingTodo, updatedTodo);
       });
   }

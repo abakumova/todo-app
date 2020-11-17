@@ -25,6 +25,7 @@ dependencies {
     compile 'io.swagger:swagger-annotations:1.6.2'
     compile 'javax.persistence:javax.persistence-api:2.2'
 
+    implementation 'org.springframework.boot:spring-boot-starter-security:2.3.2.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-web:2.3.2.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb:2.3.2.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-validation:2.3.2.RELEASE'

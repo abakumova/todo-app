@@ -1,3 +1,5 @@
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.4/lodash.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.2/angular.min.js"></script>
 <div class="todo-content">
   <h1 class="page-title">Todos</h1>
   <div class="todo-create">
@@ -5,7 +7,7 @@
       <input type="text" id="title" class="form-control" placeholder="Type a todo and press enter..."
              required
              name="title" [(ngModel)]="newTodo.title"
-             #title="ngModel" >
+             #title="ngModel">
       <div *ngIf="title.errors && title.dirty"
            class="alert alert-danger">
         <div [hidden]="!title.errors.required">
@@ -14,8 +16,9 @@
       </div>
     </form>
   </div>
+
   <ul class="todo-list">
-    <li *ngFor="let todo of todos" [class.completed]="todo.isCompleted === true" >
+    <li *ngFor="let todo of todos" [class.completed]="todo.isCompleted === true">
       <div class="todo-row" *ngIf="!editing || editingTodo.id != todo.id">
         <a class="todo-completed" (click)="toggleIsCompleted(todo)">
           <em class="material-icons toggle-completed-checkbox"></em>

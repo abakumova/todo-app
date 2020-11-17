@@ -10,21 +10,25 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
 
-@CrossOrigin("*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @Validated
 @RequestMapping(path = "/ta/apis/v1")
@@ -63,7 +67,7 @@ public class TodoController {
             @ApiResponse(code = 500, message = "Server error")
     })
     @ApiOperation(value = "Creates todo", response = Todo.class)
-    @PostMapping(consumes = "application/json", produces = "application/json")
+    @PostMapping("/todos")
     public Todo createTodo(@Valid @RequestBody TodoDto todoDto) {
         return todoService.create(todoDto);
     }
@@ -88,5 +92,11 @@ public class TodoController {
     @DeleteMapping("/todos/{id}")
     public void deleteTodo(@ApiParam(value = "Todo id to delete", required = true) @PathVariable("id") String id) {
         todoService.delete(id);
+    }
+
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Some parameters are invalid")
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public void handleException() {
+        log.info("Entered value - Unable to create/update todo");
     }
 }

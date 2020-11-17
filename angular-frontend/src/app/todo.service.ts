@@ -5,38 +5,38 @@ import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class TodoService {
-  private baseUrl = 'http://localhost:8080';
+  private baseUrl = 'http://localhost:8080/ta/apis/v1';
 
   constructor(private http: Http) { }
 
   getTodos():  Promise<Todo[]> {
-    return this.http.get(this.baseUrl + '/ta/apis/v1/todos/')
+    return this.http.get(this.baseUrl + '/todos/')
       .toPromise()
       .then(response => response.json() as Todo[])
       .catch(this.handleError);
   }
 
   createTodo(todoData: Todo): Promise<Todo> {
-    return this.http.post(this.baseUrl + '/ta/apis/v1/todos/', todoData)
+    return this.http.post(this.baseUrl + '/todos/', todoData)
       .toPromise().then(response => response.json() as Todo)
       .catch(this.handleError);
   }
 
   updateTodo(todoData: Todo): Promise<Todo> {
-    return this.http.put(this.baseUrl + '/ta/apis/v1/todos/' + todoData.id, todoData)
+    return this.http.put(this.baseUrl + '/todos/' + todoData.id, todoData)
       .toPromise()
       .then(response => response.json() as Todo)
       .catch(this.handleError);
   }
 
   deleteTodo(id: string): Promise<any> {
-    return this.http.delete(this.baseUrl + '/ta/apis/v1/todos/' + id)
+    return this.http.delete(this.baseUrl + '/todos/' + id)
       .toPromise()
       .catch(this.handleError);
   }
 
   private handleError(error: any): Promise<any> {
-    console.error('Error has occured', error);
+    console.error('Some error occurred', error);
     return Promise.reject(error.message || error);
   }
 }
