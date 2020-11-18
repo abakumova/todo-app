@@ -21,13 +21,14 @@ import java.util.Date;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 public class TodoTest {
 
-    private TodoDto todoDto = new TodoDto();
+    private final TodoDto todoDto = new TodoDto();
     private MockMvc mockMvc;
 
     @Spy
@@ -65,6 +66,26 @@ public class TodoTest {
                 post("/ta/apis/v1/todos")
                         .contentType(TestUtil.APPLICATION_JSON_UTF8)
                         .content(TestUtil.asJsonString(todoDto)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void verifyDeleteTodo() throws Exception {
+        //given
+        todoDto.setId("test000111");
+        todoDto.setTitle("Test");
+
+        mockMvc.perform(
+                post("/ta/apis/v1/todos")
+                        .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                        .content(TestUtil.asJsonString(todoDto)))
+                .andExpect(status().isOk());
+
+        //when
+        mockMvc.perform(
+                delete("/ta/apis/v1/todos/{id}", "test000111")
+                        .contentType(TestUtil.APPLICATION_JSON_UTF8)
+                .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
     }
 }

@@ -20,10 +20,6 @@ import java.util.Date;
 @Document(collection = "todos")
 public class Todo {
 
-    public Todo(TodoDto todoDto) {
-        BeanUtils.copyProperties(todoDto, this);
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
@@ -37,6 +33,10 @@ public class Todo {
     private Date createdAt;
 
     private Boolean isCompleted;
+
+    public Todo(TodoDto todoDto) {
+        BeanUtils.copyProperties(todoDto, this);
+    }
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt == null ? new Date() : createdAt;
